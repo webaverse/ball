@@ -14,7 +14,7 @@ export default () => {
   useFrame(() => {
 
     if(physicsIds[0] && sphere) {
-      sphere.position.copy(physicsIds[0].position);
+      sphere.position.copy(physicsIds[0].position).sub(app.position);
       sphere.quaternion.copy(physicsIds[0].quaternion);
       app.updateMatrixWorld();
     }
@@ -49,9 +49,12 @@ export default () => {
       physicsMaterial,
       true
     );
+
     physicsIds.push(physicsId);
-    //physicsId.setMassAndInertia(0, new THREE.Vector3(0,0,0));
-    app.updateMatrixWorld();
+    
+    physicsId.position.copy(app.position);
+    physicsId.quaternion.copy(app.quaternion);
+    physics.setTransform(physicsId);
   })();
   
   useCleanup(() => {
